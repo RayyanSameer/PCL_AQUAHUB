@@ -1,0 +1,22 @@
+{
+  "name": "vendor-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "db:setup": "node src/db/migrations/001_create_vendor_tables.js && node src/db/seeds/mock_data.js",
+    "db:reset": "node src/db/seeds/reset_and_seed.js",
+    "start": "node src/server/index.js",
+    "dev": "nodemon --watch src --exec node src/server/index.js",
+    "test:e2e:server": "npm run db:reset && npm run dev"
+  },
+  "dependencies": {
+    "better-sqlite3": "^8.0.0",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

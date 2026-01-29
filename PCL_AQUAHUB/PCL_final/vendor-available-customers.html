@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Available Orders - AquaHub Vendor</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="vendor-dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <img src="assets/Untitled_design-removebg-preview.png" alt="AquaHub" class="logo-img">
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="vendor-dashboard.html" class="nav-link">Dashboard</a></li>
+          <li class="nav-item"><a href="vendor-available-customers.html" class="nav-link">Available Orders</a></li>
+          <li class="nav-item"><a href="vendor-fleet.html" class="nav-link">Fleet Management</a></li>
+        </ul>
+        <div class="nav-actions">
+          <div class="user-info">
+            <span class="user-name" id="userName">Loading...</span>
+            <span class="user-type">Vendor</span>
+          </div>
+          <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="welcome-section">
+        <h1>Available Orders</h1>
+        <p>See nearby customers and assign orders to your fleet.</p>
+      </section>
+
+      <section class="orders-section">
+        <div id="ordersContainer"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><p>&copy; AquaHub</p></div></footer>
+  <script src="login.js"></script>
+  <script src="vendor-available.js"></script>
+</body>
+</html>

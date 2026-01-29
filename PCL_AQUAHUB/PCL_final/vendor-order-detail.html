@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Detail - AquaHub Vendor</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="vendor-dashboard.css" />
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo"><img src="assets/Untitled_design-removebg-preview.png" alt="AquaHub" class="logo-img"></div>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="vendor-dashboard.html" class="nav-link">Dashboard</a></li>
+          <li class="nav-item"><a href="vendor-available-customers.html" class="nav-link">Available Orders</a></li>
+          <li class="nav-item"><a href="vendor-fleet.html" class="nav-link">Fleet Management</a></li>
+        </ul>
+        <div class="nav-actions"><div class="user-info"><span id="userName">Loading...</span></div></div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="order-detail">
+        <h2 id="orderTitle">Order</h2>
+        <div id="orderInfo"></div>
+        <div id="map" style="height:400px;margin-top:12px"></div>
+        <div style="margin-top:12px"><button id="deliverBtn" class="accept">Mark as Delivered</button></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><p>&copy; AquaHub</p></div></footer>
+  <script src="login.js"></script>
+  <script src="vendor-order-detail.js"></script>
+</body>
+</html>
