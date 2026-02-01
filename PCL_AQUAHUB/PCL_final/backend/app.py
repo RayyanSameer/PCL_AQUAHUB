@@ -28,6 +28,25 @@ DB_CONFIG = {
     'port': os.getenv('DB_PORT', '5432')
 }
 
+# Fail-fast check for required environment variables
+def validate_required_env_vars():
+    """Ensure required DB env vars are present. On missing vars:
+    - In testing: raise RuntimeError (so tests can assert without exiting)
+    - Otherwise: exit process with SystemExit (fail fast on app start)
+    """
+    required = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_PORT']
+    missing = [name for name in required if not os.getenv(name)]
+    if missing:
+        msg = f"Missing required env vars: {', '.join(missing)}"
+        print(f"FATAL: {msg}")
+        # Different behavior in tests vs real runs
+        if os.getenv('FLASK_ENV') == 'testing':
+            raise RuntimeError(msg)
+        raise SystemExit(msg)
+
+# Validate at import/startup
+validate_required_env_vars()
+
 def get_db_connection():
     """Create database connection"""
     try:

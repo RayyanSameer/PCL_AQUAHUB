@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: aquahub_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install system deps (psql)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r PCL_AQUAHUB/PCL_final/backend/requirements.txt
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..30}; do
+            pg_isready -h 127.0.0.1 -p 5432 -U postgres && break || sleep 1
+          done
+        env:
+          PGPASSWORD: postgres
+
+      - name: Create database & apply schema
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE IF NOT EXISTS aquahub_db;" || true
+          psql -h 127.0.0.1 -U postgres -d aquahub_db -f PCL_AQUAHUB/PCL_final/database/schema.sql
+          psql -h 127.0.0.1 -U postgres -d aquahub_db -f PCL_AQUAHUB/PCL_final/database/sample_data.sql || true
+
+      - name: Run tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_NAME: aquahub_db
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_PORT: 5432
+        run: |
+          export PYTHONPATH=PCL_AQUAHUB/PCL_final
+          pytest -q

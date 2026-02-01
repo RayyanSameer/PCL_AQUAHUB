@@ -43,5 +43,24 @@
 - **Changes Made**: Added smoke tests that verify `GET /api/health` and `GET /api/users` endpoints return JSON responses
 - **Testing**: Run `pytest -q` (tests accept both success and DB-unavailable responses)
 
+## Fix #5: Fail-fast environment variable validation
+- **Date**: 2026-02-01
+- **Severity**: High
+- **Issue**: Missing DB env variables can cause runtime errors that are hard to debug
+- **Files Modified**:
+  - `backend/app.py` (added `validate_required_env_vars()` and invoked at startup)
+  - `tests/test_config.py` (new tests to assert behavior)
+- **Changes Made**: Added a startup check that prints a clear `FATAL:` message and **exits** with `SystemExit` when required DB env vars are missing. In `testing` mode this raises `RuntimeError` so tests can assert behavior without terminating the test runner.
+- **Testing**: `pytest -q` — new tests assert both `SystemExit` and `RuntimeError` behaviors and the app loads when env vars are present.
+- **Assumptions**: Using `FLASK_ENV` value of `testing` to change behavior for test runs.
+
+## Fix #6: Add GitHub Actions CI to run smoke tests with Postgres
+- **Date**: 2026-02-01
+- **Severity**: High
+- **Files Modified**:
+  - `.github/workflows/ci.yml` (new)
+- **Changes Made**: Added a CI workflow that starts a Postgres service, applies schema/sample data, installs dependencies, and runs `pytest`.
+- **Testing**: Workflow runs on push and PR to `main/master` to ensure health checks and smoke tests pass in CI.
+
 ---
 Summary: These changes are small, low-risk, and help any agent or developer verify the running state and configure their environment quickly.
