@@ -1,0 +1,10 @@
+# Ignore Python virtual environments
+.venv/
+venv/
+
+# Byte-compiled / cached files
+__pycache__/
+*.pyc
+
+# Environment files
+.env
