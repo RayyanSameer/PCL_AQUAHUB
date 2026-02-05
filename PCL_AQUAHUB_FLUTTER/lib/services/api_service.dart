@@ -19,12 +19,34 @@ abstract class ApiService {
 
   /// Get vendor fleet (trucks) for a vendor profile id
   Future<List<Truck>> getVendorFleet(String vendorProfileId);
+
+  /// Set or clear the authorization token for authenticated requests.
+  void setAuthToken(String? token);
 }
 
 class DioApiService implements ApiService {
   final Dio _dio;
+  String? _authToken;
 
-  DioApiService({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: kBackendBaseUrl, connectTimeout: 5000, receiveTimeout: 5000));
+  DioApiService({Dio? dio})
+      : _dio = dio ??
+            Dio(BaseOptions(
+              baseUrl: kBackendBaseUrl,
+              connectTimeout: const Duration(seconds: 10),
+              receiveTimeout: const Duration(seconds: 10),
+            ));
+
+  String? get authToken => _authToken;
+
+  @override
+  void setAuthToken(String? token) {
+    _authToken = token;
+    if (token != null && token.isNotEmpty) {
+      _dio.options.headers['Authorization'] = 'Bearer $token';
+    } else {
+      _dio.options.headers.remove('Authorization');
+    }
+  }
 
   @override
   Future<HealthResponse> getHealth() async {
