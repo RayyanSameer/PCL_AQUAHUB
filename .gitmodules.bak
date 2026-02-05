@@ -1,0 +1,12 @@
+[submodule "PCL_AQUAHUB"]
+	path = PCL_AQUAHUB
+	url = git@github.com:RayyanSameer/PCL_AQUAHUB.git
+# Ignore the virtual environment directory
+path/to/venv/
+venv/
+env/
+.venv/
+
+# Ignore compiled python files
+__pycache__/
+*.pyc
